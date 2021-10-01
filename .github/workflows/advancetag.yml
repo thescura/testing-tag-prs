@@ -13,7 +13,7 @@ jobs:
             try {
                 await github.git.deleteRef({
                   owner: context.repo.owner,
-                  repo: context.repo.repo,
+                  repo: context.repo.develop,
                   ref: "tags/v1.0"
                 })
             } catch (e) {
@@ -21,7 +21,7 @@ jobs:
             }
             await github.git.createRef({
               owner: context.repo.owner,
-              repo: context.repo.repo,
+              repo: context.repo.develop,
               ref: "refs/tags/v1.0",
               sha: context.sha
             })
