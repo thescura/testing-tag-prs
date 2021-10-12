@@ -5,7 +5,7 @@ name: Release workflow
 on:  
   push:
     tags:
-      - 'v1.0-merge'
+      - v*
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
@@ -17,15 +17,38 @@ on:
         # Input has to be provided for the workflow to run
         required: true
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+# Creates a release whenever a new change gets pushed onto the dev branch
+# https://github.com/ncipollo/release-action
 jobs:
-  # This workflow contains a single job called "greet"
   build:
+    name: setup environment 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
     steps:
-    - uses: actions/checkout@v2
-    - uses: ncipollo/release-action@v1
-      with:
-        artifacts: "release.tar.gz,foo/*.txt"
-        bodyFile: "body.md"
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Cache node modules
+        uses: actions/cache@v2.1.3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+            
+      - name: Node ${{ matrix.node-version }}
+        uses: actions/setup-node@v1.4.4
+        with:
+          node-version: ${{ matrix.node-version }}
+        
+      - name: npm install      
+        run: |
+          npm i
+          npm run build:ci  
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ secrets.TOKEN }}
