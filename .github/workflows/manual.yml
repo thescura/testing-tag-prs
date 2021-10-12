@@ -35,4 +35,8 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
+          allowUpdates: true
+          artifactErrorsFailBuild: true
+          artifacts: "output/*"
+        env:
           token: ${{ secrets.TOKEN }}
