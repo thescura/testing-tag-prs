@@ -1,0 +1,40 @@
+name: Release workflow
+
+on:  
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+    inputs:
+      Environment:
+        required: true
+      Tags:
+        required: true
+
+# Creates a release whenever a new change gets pushed onto the dev branch
+jobs:
+  build:
+    name: setup environment 
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+            
+        name: Create Release
+        id: create_release
+      - uses: actions/create-release@latest
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            stage: ${{ github.event.inputs.Environment }}
+        with:
+          tag_name: ${{ github.event.inputs.Tags }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
