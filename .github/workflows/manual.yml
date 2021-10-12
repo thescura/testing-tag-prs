@@ -7,10 +7,17 @@ on:
     tags:
       - v*
   workflow_dispatch:
-    # Inputs the workflow accepts.
     inputs:
-        tags:
-        description: ''
+    # Inputs the workflow accepts.
+      name:
+        # Friendly description to be shown in the UI instead of 'name'
+        description: 'Environment'
+        # Default value if no value is explicitly provided
+        default: 'Develop'
+        # Input has to be provided for the workflow to run
+        required: true
+      tags:
+          description: ''
 
 # Creates a release whenever a new change gets pushed onto the dev branch
 # https://github.com/ncipollo/release-action
