@@ -9,9 +9,6 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        # Friendly description to be shown in the UI instead of 'name'
-        # Default value if no value is explicitly provided
-        default: 'Develop'
         # Input has to be provided for the workflow to run
         required: true
       tags:
