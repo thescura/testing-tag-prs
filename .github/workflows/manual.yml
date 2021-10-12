@@ -5,7 +5,7 @@ name: Release workflow
 on:  
   push:
     tags:
-      - 'v*'
+      - 'v1.0-merge'
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
