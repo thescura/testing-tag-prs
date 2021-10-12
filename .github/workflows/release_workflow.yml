@@ -8,10 +8,10 @@ on:
       - v*
   workflow_dispatch:
     inputs:
-      environment:
+      Environment:
         # Input has to be provided for the workflow to run
         required: true
-      tags:
+      Tags:
           description: ''
           required: true
 
@@ -35,9 +35,9 @@ jobs:
       - uses: actions/create-release@latest
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            stage: ${{ github.event.inputs.environment }}
+            stage: ${{ github.event.inputs.Environment }}
         with:
-          tag_name: ${{ github.event.inputs.tags }}
+          tag_name: ${{ github.event.inputs.Tags }}
           release_name: Release ${{ github.ref }}
           body: |
             ${{ steps.Changelog.outputs.changelog }}
