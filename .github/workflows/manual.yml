@@ -32,15 +32,6 @@ jobs:
         with:
           fetch-depth: 0
             
-      - name: Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1.4.4
-        with:
-          node-version: ${{ matrix.node-version }}
-        
-      - name: npm install      
-        run: |
-          npm i
-          npm run build:ci  
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
